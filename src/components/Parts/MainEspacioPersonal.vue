@@ -57,9 +57,14 @@
                 
                 </div>
             </div>
-            <div v-if="numeroDeEspaciosTotales == 0 && !mostrarFormulario" class="row mt-3">
+            <div v-if="numeroDeEspaciosTotales == 0 && !mostrarFormulario && response" class="row mt-3">
                 <div class="col-12">
                     <span>Tu espacio personal está vacío. <a class="enlaceNuevaEntrada" @click="formularioNuevo">Crea tu primera entrada</a></span>
+                </div>
+            </div>
+            <div v-else-if="!response" class="row mt-3">
+                <div class="col-12">
+                    <span>Este usuario actualmente no tiene ningun espacio personal.</span>
                 </div>
             </div>
             <div v-if="mostrarFormulario" class="row mt-3">
@@ -254,16 +259,16 @@ export default {
 
     beforeCreate() {
         var thisUser = sessionStorage.getItem('user')
-            thisUser = JSON.parse(thisUser)
-            const path = "http://localhost:8000/api/v1.0/users/?email=" + thisUser.email + "&password=" + thisUser.password
-            axios.get(path).then((response) => {
-                if(response.data[0].id == this.$route.params.id) {
-                    this.respuesta = true
-                }
-                else this.respuesta = false
-            }).catch(() => {
-                console.log("ERROR")
-            })
+        thisUser = JSON.parse(thisUser)
+        const path = "http://localhost:8000/api/v1.0/users/?email=" + thisUser.email + "&password=" + thisUser.password
+        axios.get(path).then((response) => {
+            if(response.data[0].id == this.$route.params.id) {
+                this.respuesta = true
+            }
+            else this.respuesta = false
+        }).catch(() => {
+            console.log("ERROR")
+        })
     }
 
 }

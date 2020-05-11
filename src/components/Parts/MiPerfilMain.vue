@@ -21,7 +21,7 @@
                 </div>
             </div>
             <MainEspacioPersonal></MainEspacioPersonal>
-            <MainTablon @recarga="recarga"></MainTablon>
+            <MainTablon :user="user" @recarga="recarga"></MainTablon>
         </div>
     </div>
 </template>
