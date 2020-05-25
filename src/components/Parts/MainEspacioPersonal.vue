@@ -57,12 +57,12 @@
                 
                 </div>
             </div>
-            <div v-if="numeroDeEspaciosTotales == 0 && !mostrarFormulario && response" class="row mt-3">
+            <div v-if="numeroDeEspaciosTotales == 0 && !mostrarFormulario && respuesta" class="row mt-3">
                 <div class="col-12">
                     <span>Tu espacio personal está vacío. <a class="enlaceNuevaEntrada" @click="formularioNuevo">Crea tu primera entrada</a></span>
                 </div>
             </div>
-            <div v-else-if="!response" class="row mt-3">
+            <div v-else-if="!respuesta" class="row mt-3">
                 <div class="col-12">
                     <span>Este usuario actualmente no tiene ningun espacio personal.</span>
                 </div>
@@ -167,9 +167,7 @@ export default {
                 this.date = response.data[this.numeroDeEspacioActual-1].dateTime
                 this.video = response.data[this.numeroDeEspacioActual-1].video
                 this.imagen = response.data[this.numeroDeEspacioActual-1].imagen
-            }).catch(() => {
-                console.log("ERRRROOOOOOOR")
-            })
+            }).catch(() => {})
         },
 
         siguienteEspacio() {

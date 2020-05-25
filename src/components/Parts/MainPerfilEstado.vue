@@ -31,9 +31,9 @@ export default {
             if(this.$route.params.id){
                 const path = "http://localhost:8000/api/v1.0/status/?user=" + this.$route.params.id
                 axios.get(path).then((response) => {
-                    if(response.data.length > 0) {
-                        this.estado.estado_texto = response.data[0].status_text
-                        this.estado.dateTime = response.data[0].dateTime
+                    if(response.data.results.length > 0) {
+                        this.estado.estado_texto = response.data.results[0].status_text
+                        this.estado.dateTime = response.data.results[0].dateTime
                     } else {
                         this.$emit('sinEstado');
                     }
@@ -58,9 +58,9 @@ export default {
         getStatus(id) {
             const path = "http://localhost:8000/api/v1.0/status/?user=" + id
             axios.get(path).then((response) => {
-                if(response.data.length > 0) {
-                    this.estado.estado_texto = response.data[0].status_text
-                    this.estado.dateTime = response.data[0].dateTime
+                if(response.data.results.length > 0) {
+                    this.estado.estado_texto = response.data.results[0].status_text
+                    this.estado.dateTime = response.data.results[0].dateTime
                 } else {
                     this.$emit('sinEstado');
                 }
