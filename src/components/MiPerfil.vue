@@ -3,7 +3,7 @@
         <div class="col-12 pl-0">
             <div class="row">
                 <div class="col-12 pr-0">
-                    <Navbar @recarga="recargar"></Navbar>
+                    <Navbar ref="navbar" @recarga="recargar"></Navbar>
                 </div>
             </div>
             <div v-if="complete" class="row">
@@ -70,6 +70,8 @@ export default {
 
     methods: {
         recargar() {
+            if(this.$refs.navbar.user.id != this.$route.params.id)
+                this.$refs.navbar.addVisit()
             const path = "http://localhost:8000/api/v1.0/users/?id=" + this.$route.params.id
             axios.get(path).then((response) => {
                 this.user.nombre = response.data[0].name

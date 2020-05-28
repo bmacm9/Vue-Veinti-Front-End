@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-12 pr-0">
-                    <MiPerfilMisFotos></MiPerfilMisFotos>
+                    <MiPerfilMisFotos :user="user" @recarga="recarga"></MiPerfilMisFotos>
                 </div>
             </div>
             <div class="row">

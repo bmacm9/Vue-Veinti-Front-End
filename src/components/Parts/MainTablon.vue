@@ -115,26 +115,25 @@
                                     eliminar
                                 </div>
                             </div>
-                            <div class="row">
-                                <form @submit.prevent="enviarRespuestaComentario($event, entrada.id)" class="col-12"></form>
-                            </div>
+                            
+                                <form @submit.prevent="enviarRespuestaComentario($event, entrada[0].commentProfile.id)" class="row"></form>
+                            
                         </div>
-                            <div class="col-12">
-                                <div v-for="objeto in entrada" :key="objeto.id" class="col-12 justify-content-center my-3">
-                                    <div class="row">
-                                        <div class="col-11">
-                                            <div class="row">
-                                                <div class="col-1">
-                                                    <img :src="objeto.user.profile_pic" class="user_pic"/>
-                                                </div>
-                                                <div class="col">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <a class="enlace_perfil" @click="perfil(objeto.user.id)">{{objeto.user.name}} {{objeto.user.surname}}</a> <small>{{objeto.dateTime}}</small>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            {{objeto.reply}}
-                                                        </div>
+                        <div class="col-12">
+                            <div v-for="objeto in entrada" :key="objeto.id" class="col-12 justify-content-center my-3">
+                                <div class="row">
+                                    <div class="col-11">
+                                        <div class="row">
+                                            <div class="col-1">
+                                                <img :src="objeto.user.profile_pic" class="user_pic"/>
+                                            </div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a class="enlace_perfil" @click="perfil(objeto.user.id)">{{objeto.user.name}} {{objeto.user.surname}}</a> <small>{{objeto.dateTime}}</small>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        {{objeto.reply}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -142,6 +141,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -388,7 +388,6 @@ export default {
                         if(objeto.hasAnswers != "no"){
                             if(objeto.status_text){
                                 var path3 = "http://localhost:8000/api/v1.0/commentstatus/?status=" + objeto.id
-                                console.log(path3)
                                 axios.get(path3).then((response2) => {
                                     let arrayConRespuestas = []
                                     for(let statusWithAnswers of response2.data){
@@ -423,7 +422,6 @@ export default {
             }).finally(() => {
                 this.aux = true
             })
-            console.log(this.entradasTotales)
         },
 
         perfil(id) {
@@ -511,7 +509,6 @@ export default {
                 user: this.user.id,
                 commentProfile: id,
             }
-            console.log(insertar)
             axios.post(path, insertar).then((response) => {
             }).catch((error) => {
                 console.log("error1", error)
@@ -534,7 +531,6 @@ export default {
                 user: this.user.id,
                 status: id,
             }
-            console.log(insertar)
             axios.post(path, insertar).then((response) => {
             }).catch((error) => {
                 console.log("error1", error)

@@ -158,15 +158,27 @@ export default {
             }
         },
 
+        addVisit() {
+            const path1 = "http://localhost:8000/api/v1.0/users/"+ this.$route.params.id +"/"
+            axios.get(path1).then((response) => {
+                let nuevaVisita = response.data.visits + 1
+                axios.patch(path1, {visits: nuevaVisita}).then((response) => {})
+            })
+        },
+
         getID(email) {
             const path = "http://localhost:8000/api/v1.0/users/?email=" + email
             axios.get(path).then((response) => {
                 this.user.id = response.data[0].id
+                if(this.$route.params.id) {
+                    if(this.$route.params.id != this.user.id) {
+                        this.addVisit()
+                    }
+                }
             })
         },
 
         miPerfil() {
-            //this.$router.replace('/perfil/'+ this.user.id)
             this.$router.push({name:"MiPerfil", params:{id: this.user.id}})
             this.$emit('recarga')
         }
