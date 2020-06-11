@@ -1,35 +1,39 @@
 <template>
-    <div class="row mt-3 mx-4">
-        <div class="col-12">
-            <div class="row justify-content-between border-bottom">
-                <div class="col">
-                    <h4>Fotos</h4>
-                </div>
-                <div class="col text-right">
-                    <a class="enlaceAlbum"><i class="fas fa-book"></i> Álbumes (2) <i class="fas fa-chevron-down"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 mt-2">
-            <div v-if="images.length > 0" class="row border-bottom pb-3">
-                <div v-for="image in auxImages" :key="image.id" class="col-6 mt-2">
-                    <a @click="cargarImagenModal(image)" v-b-modal.modalImagen><img class="imageFotos" :src="image.image" alt=""></a>
-                </div>
-            </div>
-            <div v-if="images.length > 6" class="row mt-2">
-                <div class="col-12">
-                    <router-link class="verTodas" to="/perfil/13/fotos/">Ver Todas ({{images.length}})</router-link>
-                </div>
-            </div>
-            <div v-if="images.length < 1" class="row">
-                <div class="col-12">
-                    <small>Aún no has sido etiquetado en ninguna foto.</small>
+    <div class="row w-100 row-perfil m-0">
+        <div class="col-12 pl-0">
+            <div class="row">
+                <div class="col-12 pr-0">
+                    <Navbar ref="navbar" ></Navbar>
+                    <div class="row mt-3 w-100">
+                        <div class="col-auto ml-5">
+                            <a class="enlace" @click="volverAPerfil()" ><i class="fas fa-chevron-left"></i> Volver al perfil</a>
+                        </div>
+                    </div>
+                    <div v-if="todasLasFotos.length > 0" class="row w-100">
+                        <div v-for="foto in todasLasFotos" :key="foto.id" class="col-3 mt-3">
+                            <div class="row justify-content-center">
+                                <a @click="cargarImagenModal(foto)" v-b-modal.modalImagen><img class="foto" :src="foto.image"/></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="todosLosAmigos.length > 0" class="row w-100">
+                        <div v-for="amigo in todosLosAmigos" :key="amigo.id" class="col-3 mt-3">
+                            <div v-if="amigo.tipo=='user'" class="row justify-content-center">
+                                <div @click="perfil(amigo.datos.is_friend.id)" class="col-auto">
+                                    <img class="foto" :src="amigo.datos.is_friend.profile_pic"/>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <a class="enlace text-center">{{amigo.datos.is_friend.name}} {{amigo.datos.is_friend.surname}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <b-modal v-if="modal.activo" size="xl" cancel-disabled ok-disabled  id="modalImagen" title="Imagen">
             <template v-slot:default>
-                <div class="row modalImagen">
+                <div  class="row modalImagen">
                     <div class="col-8 d-flex align-items-center justify-content-center">
                         <img class="imagen img-fluid" :src="modal.imagen" alt="">
                     </div>
@@ -96,17 +100,15 @@
 </template>
 
 <script>
-
+import Navbar from '@/components/Parts/Navbar.vue'
 import axios from 'axios'
 
 export default {
 
-    name: "MiPerfilMisFotos",
-
-
-
     data() {
         return {
+            todasLasFotos: [],
+            todosLosAmigos: [],
             images: [],
             email: "",
             auxImages: [],
@@ -120,7 +122,11 @@ export default {
                 id: "",
             },
             user: Object,
-        }
+        } 
+    },
+
+    components: {
+        Navbar,
     },
 
     beforeCreate() {
@@ -137,11 +143,31 @@ export default {
         })
     },
 
-    created() {
-        this.getPhotos()
+
+    mounted() {
+        if(window.location.pathname.includes("fotos")) {
+            const path = "http://localhost:8000/api/v1.0/photos/?uploaded_by=" + this.$route.params.id
+            axios.get(path).then((response) => {
+                this.todasLasFotos = response.data
+            })
+        }
+        else {
+            const path1 = "http://localhost:8000/api/v1.0/friends/?user=" + this.$route.params.id
+            const path2 = "http://localhost:8000/api/v1.0/friends/?is_friend=" + this.$route.params.id
+            
+            axios.all([axios.get(path1), axios.get(path2)]).then((response) => {
+                for(let datos of response[0].data){
+                    this.todosLosAmigos.push({datos, tipo: 'user'})
+                }
+                for(let datos of response[1].data) {
+                    this.todosLosAmigos.push({datos, tipo: 'is_friend'})
+                }
+            })
+        }
     },
-    
+
     methods: {
+
         getPhotos(id) {
             const path = "http://localhost:8000/api/v1.0/photos/?uploaded_by=" + this.$route.params.id
             axios.get(path).then((response) => {
@@ -155,6 +181,10 @@ export default {
             }).catch(() => {
                 console.log("ERRRROOOOOOOR")
             })
+        },
+
+        volverAPerfil() {
+            this.$router.replace('/perfil/'+ this.$route.params.id)
         },
 
         nuevoComentarioFoto() {
@@ -178,10 +208,11 @@ export default {
 
         perfil(id) {
             this.$router.push('/perfil/' + id)
-            this.$emit('recarga')
+            //this.$emit('recarga')
         },
 
         cargarImagenModal(image) {
+
             const path2 = "http://localhost:8000/api/v1.0/commentphotos/?image=" + image.id 
 
             axios.get(path2).then((response) => {
@@ -197,14 +228,33 @@ export default {
                 this.modal.subido_por = response.data[0].name + " " + response.data[0].surname
                 this.modal.id_user = response.data[0].id
             })
-        },
+        }
     }
+
 }
 </script>
 
 <style scoped>
+    .foto {
+        height: 275px;
+        width: 275px;
+    }
 
-    .imageFotos{
+    .foto:hover {
+        cursor: pointer;
+        box-shadow: 3px 3px 5px 0px #000;
+    }
+
+    .enlace {
+        color: #5c8fba !important;
+    }
+
+    .enlace:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+        .imageFotos{
         width: 180px;
         height: 180px;
         cursor: pointer;
@@ -255,5 +305,6 @@ export default {
         background-color: #5c8fba;
         border: none;
     }
+
 
 </style>

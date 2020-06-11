@@ -45,19 +45,17 @@
                             <p class="invitaciones">{{user.invis}} invitaciones</p>
                         </div>
                     </div>
-                    <form class="row row-invitar-form">
+                    <form @submit.prevent="enviarInvi" class="row row-invitar-form pb-3">
                         <div class="col-7 pr-0">
-                            <input class="w-100" type="email" placeholder="E-mail" name="email"/>
+                            <input required class="w-100" type="email" placeholder="E-mail" name="email"/>
                         </div>
                         <div class="col-5">
                             <b-button class="btn-invitar" variant="primary" size="sm" type="submit">Invitar</b-button>
                         </div>
-                    </form>
-                    <div class="row row-invitar-title mt-3">
-                        <div class="col-12">
-                            <h3 class="invitar-title">Eventos patrocinados</h3>
+                        <div v-if="enviada" class="col-12 pl-0 mt-3 bg-success w-100">
+                            <p class="w-100 text-white">Mandale a tu amigo el enlace: <a class="w-100">http://localhost:8080/invitacion/{{id_peticion}}</a></p>  
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -85,12 +83,50 @@ export default {
                 peticion: "2",
                 foto: "3",
                 evento: "2",
-            }
+            },
+            enviada: false,
+            id_peticion: ""
         }
     },
-    mounted() {
 
-    }
+    computed: {
+        
+    },
+
+    methods: {
+        enviarInvi() {
+            this.id_peticion = this.makeid(5)
+            const path = "http://localhost:8000/api/v1.0/invitation/"
+            let datos = {
+                code: this.id_peticion,
+                user: this.user.id
+            }
+            axios.post(path, datos).then((response) => {
+                const path2 = "http://localhost:8000/api/v1.0/users/" + this.user.id + "/"
+                let datos2 = {invitations: this.user.invis-1}
+                console.log(datos2)
+                console.log(this.user.invis-1)
+                axios.patch(path2, datos2).then((response2) => {
+                    console.log("exito")
+                }).catch((error2) => {
+                    console.log(error2)
+                })
+            }).catch((error) => {
+                console.log(error)
+            })
+            this.enviada = true
+        },
+
+        makeid(length) {
+            var result = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var charactersLength = characters.length;
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+    },
 
 }
 </script>

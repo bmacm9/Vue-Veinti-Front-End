@@ -12,8 +12,8 @@
                 <b-nav-item to="/mensajes">Mensajes</b-nav-item>
                 <b-nav-item href="#">Gente</b-nav-item>
                 <b-nav-item href="#">Videos</b-nav-item>
-                <b-nav-form>
-                    <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar..."></b-form-input>
+                <b-nav-form @submit.prevent="buscar()">
+                    <b-form-input v-model="busqueda" size="sm" class="mr-sm-2" placeholder="Buscar..."></b-form-input>
                 </b-nav-form>
                 <b-button class="subirFoto mt-md-1 ml-md-2" v-b-modal.subir-foto variant="primary">Subir foto<i class="ml-2 fas fa-cloud-upload-alt"></i></b-button>
                 <b-modal size="xl" cancel-disabled ok-disabled  id="subir-foto" title="Subir Foto">
@@ -55,7 +55,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <form @submit.prevent="subirImagenes" class="col-12">
+                                        <form @submit.prevent="subirImagenes" method="POST" class="col-12">
                                             <div class="row w-100 align-items-center">
                                                 <div class="col-12 mb-2 text-center">
                                                     <input @change="addImage($event)" type="file" value="Seleccionar Archivo"/>
@@ -131,6 +131,7 @@ export default {
             user: {
                 id: "",
             },
+            busqueda: "",
         }
     },
 
@@ -152,6 +153,7 @@ export default {
                 formData.append('image', imagen)
                 formData.append('dateTime', new Date().toISOString())
                 formData.append('uploaded_by', this.user.id)
+                console.log(formData)
                 let aux = {dateTime: new Date().toISOString(), image: imagen, uploaded_by: this.user.id}
                 axios.post(path, formData)
                 .then((response) => {})
@@ -181,6 +183,14 @@ export default {
         miPerfil() {
             this.$router.push({name:"MiPerfil", params:{id: this.user.id}})
             this.$emit('recarga')
+        },
+
+        buscar() {
+            if(this.busqueda != "") {
+                let aux = this.busqueda.replace(/\s/g, '+')
+                this.$router.push({name:"Busqueda", params:{search: aux}})
+                this.$emit('recarga')
+            }
         }
     }
 }

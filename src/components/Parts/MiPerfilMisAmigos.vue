@@ -24,7 +24,7 @@
             </div>
             <div v-if="amigos.length > 6" class="row ml-3 mt-2">
                 <div class="col-12">
-                    <a class="verTodas" href="#">Ver Todas ({{amigos.length}})</a>
+                    <router-link class="verTodas" to="/perfil/13/amigos/">Ver Todos ({{amigos.length}})</router-link>
                 </div>
             </div>
         </div>
@@ -46,32 +46,21 @@ export default {
         }
     },
 
-    mounted() {
+    beforeCreate() {        
         const path = "http://localhost:8000/api/v1.0/friends/?user=" + this.$route.params.id
-        axios.get(path).then((response) => {
-            for(let amigo of response.data) {
-                const path2 = "http://localhost:8000/api/v1.0/users/?id=" + amigo.is_friend
-                axios.get(path2).then((response2) => {
-                    this.amigos.push(response2.data[0])
-                    if(this.amigos.length <= 6) {
-                        this.aux.push(response2.data[0])
-                    }
-                })
+        const path2 = "http://localhost:8000/api/v1.0/friends/?is_friend=" + this.$route.params.id
+        axios.all([axios.get(path), axios.get(path2)]).then((response) => {
+            for(let amigo of response[0].data){
+                this.amigos.push(amigo.is_friend)
+            }
+            for(let amigo of response[1].data) {
+                this.amigos.push(amigo.user)
+            }
+            for(let i = 0; i < 6; i++) {
+                if(this.amigos[i] != undefined)
+                    this.aux[i] = this.amigos[i]
             }
         })
-        const path3 = "http://localhost:8000/api/v1.0/friends/?is_friend=" + this.$route.params.id
-        axios.get(path3).then((response) => {
-            for(let amigo of response.data) {
-                const path2 = "http://localhost:8000/api/v1.0/users/?id=" + amigo.user
-                axios.get(path2).then((response2) => {
-                    this.amigos.push(response2.data[0])
-                    if(this.amigos.length <= 6) {
-                        this.aux.push(response2.data[0])
-                    }
-                })
-            }
-        })
-
     },
 
     methods: {

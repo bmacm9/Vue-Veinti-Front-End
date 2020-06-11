@@ -62,7 +62,7 @@
                     <span>Tu espacio personal está vacío. <a class="enlaceNuevaEntrada" @click="formularioNuevo">Crea tu primera entrada</a></span>
                 </div>
             </div>
-            <div v-else-if="!respuesta" class="row mt-3">
+            <div v-else-if="!respuesta && (numeroDeEspaciosTotales == 0)" class="row mt-3">
                 <div class="col-12">
                     <span>Este usuario actualmente no tiene ningun espacio personal.</span>
                 </div>
