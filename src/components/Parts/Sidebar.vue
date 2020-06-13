@@ -5,12 +5,12 @@
                 <div class="col-11 bg-white cajaPerfil">
                     <div class="row info-row-perfil pt-2 pb-2">
                         <div class="col-2 p-0">
-                            <router-link to="/mi-perfil"><img class="imagenPerfil" :src="user.foto"/></router-link>
+                            <router-link :to="'/perfil/' + user.id"><img class="imagenPerfil" :src="user.foto"/></router-link>
                         </div>
                         <div class="col-10">
                             <div class="row">
                                 <div class="col-12 nombrePerfil">
-                                    <router-link to="/mi-perfil">{{user.nombre}} {{user.apellido}}</router-link>
+                                    <router-link :to="'/perfil/' + user.id">{{user.nombre}} {{user.apellido}}</router-link>
                                 </div>
                             </div>
                             <div class="row mt-1">
@@ -20,15 +20,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="notificaciones row" v-if="notificaciones.peticion != '' || notificaciones.foto != '' || notificaciones.evento != ''">
+                    <div class="notificaciones row" v-if="notificaciones.peticion != '' || notificaciones.comentario != ''">
                         <div class="notificacion col-12" v-if="notificaciones.peticion != ''">
-                            <a><i class="fas fa-user-plus"></i> {{notificaciones.peticion}} petición de amistad</a>
+                            <a class="notificación" @click="peticionesAmistad"><i class="fas fa-user-plus"></i> {{notificaciones.peticion}} petición de amistad</a>
                         </div>
-                        <div class="notificacion col-12" v-if="notificaciones.foto != ''">
-                            <a><i class="fas fa-tag"></i> {{notificaciones.foto}} etiquetas</a>
-                        </div>
-                        <div class="notificacion col-12" v-if="notificaciones.evento != ''">
-                            <a><i class="far fa-calendar-alt"></i> {{notificaciones.evento}} invitaciones a evento</a>
+
+                        <div class="notificacion col-12" v-if="notificaciones.comentario != ''">
+                            <a @click="borrarNoti" class="notificación"><i class="far fa-comment"></i> {{notificaciones.comentario}} comentarios en tu perfil</a>
                         </div>
                     </div>
                 </div>
@@ -80,13 +78,20 @@ export default {
             foto: "",
             invis: "",
             notificaciones: {
-                peticion: "2",
-                foto: "3",
-                evento: "2",
+                peticion: "",
+                comentario: "",
             },
             enviada: false,
             id_peticion: ""
         }
+    },
+    
+    created() {
+        setTimeout(() => {
+            this.getPeticiones()
+            this.getNotificaciones()
+        }, 500);
+        
     },
 
     computed: {
@@ -104,10 +109,7 @@ export default {
             axios.post(path, datos).then((response) => {
                 const path2 = "http://localhost:8000/api/v1.0/users/" + this.user.id + "/"
                 let datos2 = {invitations: this.user.invis-1}
-                console.log(datos2)
-                console.log(this.user.invis-1)
                 axios.patch(path2, datos2).then((response2) => {
-                    console.log("exito")
                 }).catch((error2) => {
                     console.log(error2)
                 })
@@ -125,6 +127,36 @@ export default {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
             }
             return result;
+        },
+
+        getPeticiones() {
+            const path = "http://localhost:8000/api/v1.0/friendrequest/?send_to=" + this.user.id
+            axios.get(path).then((response) => {
+                this.notificaciones.peticion = response.data.length
+            })
+        },
+
+        getNotificaciones() {
+            const path = "http://localhost:8000/api/v1.0/notifications/?user=" + this.user.id
+            axios.get(path).then((response) => {
+                this.notificaciones.comentario = response.data.length
+            })
+        },
+
+        borrarNoti() {
+            const path = "http://localhost:8000/api/v1.0/notifications/?user=" + this.user.id
+            axios.get(path).then((response) => {
+                for(let respuesta of response.data){
+                    let path2 = "http://localhost:8000/api/v1.0/notifications/" + respuesta.id + "/"
+                    axios.delete(path2).then((response) => {
+                        this.$router.push({name: "MiPerfil", params: {id: this.user.id}})
+                    })
+                }
+            })
+        },
+
+        peticionesAmistad() {
+            this.$router.push({name: "peticiones"})
         }
     },
 
@@ -202,6 +234,10 @@ export default {
         background-color: #5c8fba !important;
         width: 100%;
         border: none;
+    }
+
+    .notificacion {
+        cursor: pointer;
     }
 </style>
 

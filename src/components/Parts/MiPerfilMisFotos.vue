@@ -18,7 +18,7 @@
             </div>
             <div v-if="images.length > 6" class="row mt-2">
                 <div class="col-12">
-                    <router-link class="verTodas" to="/perfil/13/fotos/">Ver Todas ({{images.length}})</router-link>
+                    <router-link class="verTodas" :to="'/perfil/'+ user.id +'/fotos/'">Ver Todas ({{images.length}})</router-link>
                 </div>
             </div>
             <div v-if="images.length < 1" class="row">
@@ -29,11 +29,11 @@
         </div>
         <b-modal v-if="modal.activo" size="xl" cancel-disabled ok-disabled  id="modalImagen" title="Imagen">
             <template v-slot:default>
-                <div class="row modalImagen">
-                    <div class="col-8 d-flex align-items-center justify-content-center">
-                        <img class="imagen img-fluid" :src="modal.imagen" alt="">
+                <div  class="row modalImagen">
+                    <div class="col-12 col-md-8 d-flex align-items-center justify-content-center">
+                        <img class="img-fluid" :src="modal.imagen" alt="">
                     </div>
-                    <div class="col-4 border-left">
+                    <div class="col-12 col-md-4 border-left">
                         <div class="row h-100">
                             <div class="col-12">
                                 <div class="row">
@@ -87,7 +87,7 @@
                 </div>
             </template>
             <template v-slot:modal-footer="{ hide }">
-                <b-button variant="outline-danger" @click="hide('forget')">
+                <b-button class="d-none" variant="outline-danger" @click="hide('forget')">
                     Cerrar
                 </b-button>
             </template>
@@ -239,11 +239,12 @@ export default {
 
     .row-modal-comentarios {
         height: 85% !important;
+        background-color: white;
     }
 
     .row-modal-form {
         background-color: #e0e0e0;
-        height: 15% !important;
+        height: 90px !important;
     }
 
     textarea {

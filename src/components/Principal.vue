@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 text-center">
-                <img class="logo" src="../../static/logoTuenti.png">
+                <img class="logo" src="../../static/logo.png">
             </div>
             <div class="caja pt-5 pb-5 col-10 col-lg-6">
                 <div v-if="error != ''" class="row pb-2">
@@ -98,7 +98,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
-    
+
     .caja {
         border: 5px solid #4c739a;
         background-color: white;
@@ -112,7 +112,8 @@ export default {
     }
 
     .logo {
-        height: 80px;
+        height: 40px !important;
+        margin-bottom: 10px;
     }
 
     input[type="email"], input[type="password"] {

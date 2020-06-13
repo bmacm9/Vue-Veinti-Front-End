@@ -17,10 +17,10 @@
 
             <div v-if="totalMensajes.length == 0" class="row justify-content-center mt-3">
                 <div class="col-12 text-center">
-                    <img src="../../static/arana.jpg">
+                    <img class="img-fluid" src="../../static/arana.jpg">
                 </div>
                 <div class="col-12 text-center">
-                    <h3>Todavía no has recibido ningún mensaje privado, ¿a qué esperas para <a class="enlace">contactar con todos tus amigos</a>?</h3>
+                    <h3>Todavía no has recibido ningún mensaje privado, ¿a qué esperas para <router-link to="/mensajes/nuevo" class="enlace">contactar con todos tus amigos</router-link>?</h3>
                 </div>
             </div>
             <div v-if="totalMensajes.length != 0" class="container">
@@ -62,6 +62,13 @@ export default {
     
     components: {
         Navbar,
+    },
+
+    beforeCreate() {
+        if(sessionStorage.getItem('user') == undefined) {
+            document.body.style = "background-color: #5284b5 !important"
+            this.$router.push({name: "Principal"})
+        }
     },
 
     data() {

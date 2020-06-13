@@ -1,7 +1,14 @@
 <template>
     <div class="row w-100 m-0">
         <div class="col-12 p-0">
-            <Navbar></Navbar>
+            <div class="w-100">
+                <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+                <b-collapse id="nav-collapse" is-nav>
+                    <b-navbar-nav></b-navbar-nav>
+                    <!-- Right aligned nav items -->
+                    <b-navbar-nav class="ml-auto"></b-navbar-nav>
+                </b-collapse>
+            </div>
             <div v-if="!existe" class="row">
                 <div class="col-12 p-0 text-center">
                     <img src="../../static/arana.jpg">
@@ -14,12 +21,12 @@
                 <div class="col-12">
                     <div class="row border-bottom">
                         <div class="col-12">
-                            <h2 class="ml-5">Registro</h2>
+                            <h2 class="ml-5 text-white">Registro</h2>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-12 text-center">
-                            <h4 class="titulo"><em>Estás muy cerca de formar parte de nuestra familia. Registrate con tus datos y comienza a usar Veinti</em></h4>
+                            <h4 class="text-white"><em>Estás muy cerca de formar parte de nuestra familia. Registrate con tus datos y comienza a usar Veinti</em></h4>
                         </div>
                     </div>
                     <div class="row mt-5">
@@ -117,16 +124,12 @@
 
 <script>
 
-import Navbar from '@/components/Parts/Navbar.vue'
 import axios from 'axios'
 // Sha256 for encrypting passwords
 import { sha256 } from 'js-sha256';
 
 export default {
 
-    components: {
-        Navbar,
-    },
 
     data() {
         return {
@@ -161,56 +164,39 @@ export default {
             this.images.push(event.target.files[(event.target.files.length-1)])
         },
 
+        formatDate(date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
+            if (month.length < 2) 
+                month = '0' + month;
+            if (day.length < 2) 
+                day = '0' + day;
+
+            return [year, month, day].join('-');
+        },
+
         registrarse() {
             const path = "http://localhost:8000/api/v1.0/users/"
             this.passSha = sha256(this.form.pass)
-            /*let formData = new FormData()
-            formData.append('name', this.form.nombre)
-            formData.append('surname', this.form.apellido)
-            formData.append('email', this.form.email)
-            formData.append('password', this.passSha)
-            formData.append('profile_pic', this.form.foto)
-            formData.append('invitations', 10)
-            formData.append('visits', 0)
-            formData.append('born', new Date(this.form.fechaDeNacimiento))
-            formData.append('gender', this.form.sexo)
-            formData.append('civilStatus', this.form.estadoCivil)
-            /*
-            let datos = {
-                "name": this.form.nombre,
-                "surname": this.form.apellido,
-                "email": this.form.email,
-                "password": this.passSha,
-                "profile_pic": this.form.foto,
-                "invitations": 10,
-                "visits": 0,
-                "born": new Date(this.form.fechaDeNacimiento),
-                "gender": this.form.sexo,
-                "civilStatus": this.form.estadoCivil,
-            }
-            *//*
-            axios.post(path, formData)
-            .then((response) => {
-                console.log("exito")
-            })
-*/
 
             for(let imagen of this.images){
-                
                 let formData = new FormData()
-                formData.append('name', this.form.name)
+                formData.append('name', this.form.nombre)
                 formData.append('surname', this.form.apellido)
-                formData.append('email', this.form.email)
+                formData.append('email', this.form.mail)
                 formData.append('password', this.passSha)
                 formData.append('profile_pic', imagen)
                 formData.append('invitations', 10)
                 formData.append('visits', 0)
-                formData.append('born', '2020-03-03')
+                formData.append('born', this.formatDate(this.form.fechaDeNacimiento))
                 formData.append('gender', this.form.sexo)
                 formData.append('civilStatus', this.form.estadoCivil)
-                console.log(formData)
-                axios.post(path, formData)
-                .then((response) => {}).catch((error) => {
+                axios.post(path, formData).then((response) => {
+                    this.$router.push({name: "Principal"})
+                }).catch((error) => {
                     console.log(error)
                 })
             }

@@ -10,6 +10,7 @@ import verTodosX from '@/components/VerTodosX.vue'
 import Busqueda from '@/components/Busqueda.vue'
 import NuevoMensaje from '@/components/NuevoMensaje.vue'
 import Registro from '@/components/Registro.vue'
+import Peticiones from '@/components/Peticiones.vue'
 
 Vue.use(Router)
 
@@ -25,7 +26,8 @@ export default new Router({
     { path: '/perfil/:id/fotos/', component: verTodosX},
     { path: '/perfil/:id/amigos/', component: verTodosX},
     { path: '/busqueda/:search/', name: 'Busqueda', component: Busqueda },
-    { path: '/invitacion/:code/', component: Registro }
+    { path: '/invitacion/:code/', component: Registro },
+    { path: '/peticiones/', name: 'peticiones', component: Peticiones }
   ],
   mode: 'history'
 })

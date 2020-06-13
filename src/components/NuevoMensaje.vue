@@ -24,7 +24,7 @@
                     <h2>Todavía no tienes ningún amigo agregado.</h2>
                 </div>
                 <div class="col-12 text-center">
-                    <p>Empieza buscando a tus amigos para </p>
+                    <p>Empieza buscando a tus amigos y ¡Mándales todos los mensajes que quieras!</p>
                 </div>
             </div>
 
@@ -32,8 +32,8 @@
                 <div class="col-12">
                     <div class="container container-bg">
                         <form class="row p-5 justify-content-center" @submit.prevent="enviarMensaje">
-                            <div class="col-1"><strong>Para:</strong></div>
-                            <select v-model="selected" class="col-11">
+                            <div class="col-2 col-md-1"><strong>Para:</strong></div>
+                            <select v-model="selected" class="col-10 col-md-11">
                                 <option v-for="amigo in amigos" :key="amigo.id" :value="amigo.id">{{amigo.name}}</option>
                             </select>
                             <textarea v-model="textArea" rows="10" class="col-12 mt-5"></textarea>
@@ -53,6 +53,13 @@ import axios from 'axios'
 
 
 export default {
+
+    beforeCreate() {
+        if(sessionStorage.getItem('user') == undefined) {
+            document.body.style = "background-color: #5284b5 !important"
+            this.$router.push({name: "Principal"})
+        }
+    },
     
     components: {
         Navbar,

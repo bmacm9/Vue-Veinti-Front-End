@@ -5,7 +5,7 @@
                 <Navbar ref="navbar" @recarga="recargar"></Navbar>
             </div>
             <div class="row mt-5">
-                <div v-for="resultado in arrayResultados" :key="resultado.id" class="col-3">
+                <div v-for="resultado in arrayResultados" :key="resultado.id" class="col-12 col-md-3">
                     <div @click="perfil(resultado.id)" class="row justify-content-center user">
                         <div class="col-12 text-center">
                             <img class="imagenPerfil" :src="resultado.profile_pic"/>
@@ -43,6 +43,14 @@ export default {
     },
 
     methods: {
+
+        beforeCreate() {
+            if(sessionStorage.getItem('user') == undefined) {
+                document.body.style = "background-color: #5284b5 !important"
+                this.$router.push({name: "Principal"})
+            }
+        },
+
         recargar() {
             this.arrayBusqueda = []
             this.arrayResultados = []

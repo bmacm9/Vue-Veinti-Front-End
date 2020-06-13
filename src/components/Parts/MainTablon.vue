@@ -25,13 +25,13 @@
             <div v-if="!respuesta" class="row">
                 <div class="col-12">
                     <form @submit.prevent="nuevoMensajePerfil" method="POST" class="row estado border align-items-center">
-                        <div class="col-1">
+                        <div class="col-2 col-xl-1">
                             <img class="user_pic" :src="user.profile_pic">
                         </div>
-                        <div class="col-10">
+                        <div class="col">
                             <textarea v-model="textArea" class="w-100" name="" id="" rows="3"></textarea>
                         </div>
-                        <div class="col-1">
+                        <div class="col-2 col-xl-1">
                             <b-button type="submit" variant="primary" size="sm">Enviar</b-button>
                         </div>
                     </form>
@@ -41,13 +41,16 @@
                 <div class="col-12">
                     <small>Vaya... Parece que todavía no hay nada publicado por aquí.</small>
                 </div>
+                <div class="col-12 mt-3 text-center">
+                    <img class="img-fluid" src="../../../static/arana.jpg">
+                </div>
             </div>
             <div v-for="entrada in sortedTotales" :key="entrada.id" class="row">
                 <div v-if="entrada && !Array.isArray(entrada)" class="col-12">
                     <div v-if="entrada.comment && !estados && !entrada.status" class="row mt-3">
                         <div class="col-12 border-bottom pb-3">
                             <div class="row align-items-center">
-                                <div class="col-1">
+                                <div class="col-2 col-xl-1">
                                     <img class="user_pic" :src="entrada.user.profile_pic">
                                 </div>
                                 <div class="col">
@@ -85,10 +88,10 @@
                     <div v-if="entrada[0].commentProfile.comment && !estados && !entrada[0].commentProfile.status" class="row mt-3 border-bottom">
                         <div class="col-12">
                             <div class="row align-items-center">
-                                <div class="col-1">
+                                <div class="col-2 col-xl-1">
                                     <img class="user_pic" :src="entrada[0].commentProfile.user.profile_pic">
                                 </div>
-                                <div class="col">
+                                <div class="col-10 col-xl-11">
                                     <div class="row">
                                         <div class="col-auto">
                                             <a @click="perfil(entrada[0].commentProfile.user.id)" class="enlace_perfil">{{entrada[0].commentProfile.user.name}} {{entrada[0].commentProfile.user.surname}}</a>
@@ -124,7 +127,7 @@
                                 <div class="row">
                                     <div class="col-11">
                                         <div class="row">
-                                            <div class="col-1">
+                                            <div class="col-2 col-xl-1">
                                                 <img :src="objeto.user.profile_pic" class="user_pic"/>
                                             </div>
                                             <div class="col">
@@ -150,10 +153,10 @@
                     <div v-if="entrada.comment && entrada.status" class="row estado">
                         <div class="col-12 border-bottom">
                             <div class="row align-items-start my-3">
-                                <div class="col-1">
+                                <div class="col-3 col-xl-1">
                                     <img class="user_pic" :src="entrada.status.user.profile_pic">
                                 </div>
-                                <div class="col-11">
+                                <div class="col-9 col-xl-11">
                                     <div class="row">
                                         <div class="col-auto">
                                             {{entrada.status.status_text}}
@@ -200,10 +203,10 @@
                     <div v-if="entrada.status_text" class="row estado">
                         <div class="col-12 border-bottom">
                             <div class="row align-items-start my-3">
-                                <div class="col-1">
+                                <div class="col-2 col-xl-1">
                                     <img class="user_pic" :src="entrada.user.profile_pic">
                                 </div>
-                                <div class="col-11">
+                                <div class="col-10 col-xl-11">
                                     <div class="row">
                                         <div class="col-auto">
                                             {{entrada.status_text}}
@@ -234,10 +237,10 @@
                             <div class="row">
                                 <div class="col-12 border-bottom">
                                     <div class="row align-items-start my-3">
-                                        <div class="col-1">
+                                        <div class="col-2 col-xl-1">
                                             <img class="user_pic" :src="user.profile_pic">
                                         </div>
-                                        <div class="col-11">
+                                        <div class="col-10 col-xl-11">
                                             <div class="row">
                                                 <div class="col-auto">
                                                     {{entrada[0].status.status_text}}
@@ -264,7 +267,7 @@
                                     <div class="row justify-content-center">
                                         <div v-for="comentario in entrada" :key="comentario.id" class="col-11 mb-3">
                                             <div class="row">
-                                                <div class="col-auto">
+                                                <div class="col-2 col-xl-1">
                                                     <img :src="comentario.user.profile_pic" class="user_pic">
                                                 </div>
                                                 <div class="col-10">
@@ -453,7 +456,16 @@ export default {
                 "profile": this.$route.params.id 
             }
             axios.post(path, comentario).then((response) => {
-                this.perfil(this.$route.params.id)
+                const path2 = "http://localhost:8000/api/v1.0/notifications/"
+                let notificacion = {
+                    user: this.$route.params.id
+                }
+                console.log(notificacion)
+                axios.post(path2, notificacion).then((response) => {
+                    this.perfil(this.$route.params.id)
+                }).catch((error) => {
+                    console.log("ERRROR")
+                })
             }).catch((error) => {
                 console.log("ERROOOOOOR")
             })

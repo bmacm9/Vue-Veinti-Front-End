@@ -4,7 +4,7 @@
     <div class="row mr-0">
       <Sidebar :user="user" class="col-9 col-sm-5 col-md-4 col-xl-2 ml-5"></Sidebar>
       <HomeMain class="col-11 col-md-7"></HomeMain>
-      <RightSide class="d-none d-xl-inline col-xl-2 mr-5"></RightSide>
+      <RightSide class="d-none d-xl-inline col-xl-2"></RightSide>
     </div>
   </div>
 </template>
@@ -39,7 +39,8 @@ export default {
   },
   
   beforeCreate() {
-    this.user = sessionStorage.getItem('user')
+    if(sessionStorage.getItem('user') != undefined) {
+      this.user = sessionStorage.getItem('user')
       this.user = JSON.parse(this.user)
       const path = "http://localhost:8000/api/v1.0/users/?email=" + this.user.email  + "&password=" + this.user.password
       axios.get(path).then((response) => {
@@ -50,6 +51,11 @@ export default {
         this.user.invis = response.data[0].invitations
         this.user.id = response.data[0].id
       })
+    }
+    else {
+      document.body.style = "background-color: #5284b5 !important"
+      this.$router.push({name: "Principal"})
+    }
   },
 
 }

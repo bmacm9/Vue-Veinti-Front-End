@@ -21,6 +21,27 @@
                     <h3>Novedades de tus amigos</h3>
                 </div>
             </div>
+            <div v-if="amigos.length == 0" class="row justify-content-center">
+                <div class="col-12 text-center">
+                    <img src="../../../static/arana.jpg">
+                </div>
+                <div class="col-12 text-center texto-veinti">
+                    <h3>Todavía no tienes ningún amigo en Veinti. Comienza buscando a tus amigos.</h3>
+                </div>
+            </div>
+
+            <div v-if="amigos.length != 0" class="row">
+                <div class="col-12">
+                    <div v-for="amigo in amigos" :key="amigo.key" class="row py-3 mt-3 border">
+                        <div class="col-auto">
+                            <img class="imagePerfil" :src="amigo.profile_pic">
+                        </div>
+                        <div class="col-auto">
+                            <a @click="perfil(amigo.id)" class="enlace">{{amigo.name}} {{amigo.surname}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -38,6 +59,7 @@ export default {
         this.email = this.user.email
         this.getID(this.email)
         this.complete = true
+        
     },
 
     components: {
@@ -53,6 +75,7 @@ export default {
             email: "",
             complete: false,
             tieneEstado: false,
+            amigos: []
         }
     },
 
@@ -71,6 +94,23 @@ export default {
             })
         },
 
+        perfil(id) {
+            this.$router.push({name: "MiPerfil", params: {id: id}})
+        },
+
+        getAmigos() {
+            const path = "http://localhost:8000/api/v1.0/friends/?user=" + this.user.id
+            const path2 = "http://localhost:8000/api/v1.0/friends/?is_friend=" + this.user.id
+            axios.all([axios.get(path), axios.get(path2)]).then((response) => {
+                for(let amigo of response[0].data){
+                    this.amigos.push(amigo.is_friend)
+                }
+                for(let amigo of response[1].data) {
+                    this.amigos.push(amigo.user)
+                }
+            })
+        },
+
         sinEstado() {
             this.tieneEstado = true;
         },
@@ -79,6 +119,7 @@ export default {
             const path = "http://localhost:8000/api/v1.0/users/?email=" + email
             axios.get(path).then((response) => {
                 this.user.id = response.data[0].id
+                this.getAmigos()
             })
         },
     }
@@ -92,6 +133,19 @@ export default {
         border: none;
     }
 
+    .texto-veinti {
+        color: #5c8fba !important;
+    }
+
+    .enlace {
+        color: #5c8fba !important;
+        cursor: pointer;
+    }
+
+    .enlace:hover {
+        text-decoration: underline;
+    }
+
     .input-estado {
         height: 50px;
     }
@@ -100,5 +154,10 @@ export default {
     .estado {
         font-size: 14px;
         align-self: center;
+    }
+
+    .imagePerfil {
+        height: 100px;
+        width: 100px;
     }
 </style>

@@ -7,13 +7,13 @@
                 </div>
             </div>
             <div v-if="(complete && sonAmigos) || esMiPerfil" class="row">
-                <div class="col-3">
+                <div class="col-12 col-md-6 col-xl-3 ">
                     <MiPerfilSidebar v-if="recarga" class="h-100" :user="user"></MiPerfilSidebar>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-md-6 ">
                     <MiPerfilMain @recarga="recargar" v-if="recarga" :user="user"></MiPerfilMain>
                 </div>
-                <div class="col-3 w-100">
+                <div class="col-12 col-xl-3 w-100">
                     <MiPerfilDerecha @recarga="recargar" v-if="recarga" :user="user"></MiPerfilDerecha>
                 </div>
             </div>
@@ -68,8 +68,13 @@ import Vue from 'vue'
 
 export default {
 
+    beforeCreate() {     
+        if(sessionStorage.getItem('user') == undefined) {
+            document.body.style = "background-color: #5284b5 !important"
+            this.$router.push({name: "Principal"})
+        }   
 
-    beforeCreate() {        
+        
         const path = "http://localhost:8000/api/v1.0/users/?id=" + this.$route.params.id
         axios.get(path).then((response) => {
             this.user.nombre = response.data[0].name

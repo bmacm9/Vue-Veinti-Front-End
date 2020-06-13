@@ -10,14 +10,14 @@
                         </div>
                     </div>
                     <div v-if="todasLasFotos.length > 0" class="row w-100">
-                        <div v-for="foto in todasLasFotos" :key="foto.id" class="col-3 mt-3">
+                        <div v-for="foto in todasLasFotos" :key="foto.id" class="col-12 col-md-6 col-xl-3 mt-3">
                             <div class="row justify-content-center">
                                 <a @click="cargarImagenModal(foto)" v-b-modal.modalImagen><img class="foto" :src="foto.image"/></a>
                             </div>
                         </div>
                     </div>
                     <div v-if="todosLosAmigos.length > 0" class="row w-100">
-                        <div v-for="amigo in todosLosAmigos" :key="amigo.id" class="col-3 mt-3">
+                        <div v-for="amigo in todosLosAmigos" :key="amigo.id" class="col-12 col-md-6 col-xl-3 mt-3">
                             <div v-if="amigo.tipo=='user'" class="row justify-content-center">
                                 <div @click="perfil(amigo.datos.is_friend.id)" class="col-auto">
                                     <img class="foto" :src="amigo.datos.is_friend.profile_pic"/>
@@ -34,10 +34,10 @@
         <b-modal v-if="modal.activo" size="xl" cancel-disabled ok-disabled  id="modalImagen" title="Imagen">
             <template v-slot:default>
                 <div  class="row modalImagen">
-                    <div class="col-8 d-flex align-items-center justify-content-center">
-                        <img class="imagen img-fluid" :src="modal.imagen" alt="">
+                    <div class="col-12 col-md-8 d-flex align-items-center justify-content-center">
+                        <img class="img-fluid" :src="modal.imagen" alt="">
                     </div>
-                    <div class="col-4 border-left">
+                    <div class="col-12 col-md-4 border-left">
                         <div class="row h-100">
                             <div class="col-12">
                                 <div class="row">
@@ -91,7 +91,7 @@
                 </div>
             </template>
             <template v-slot:modal-footer="{ hide }">
-                <b-button variant="outline-danger" @click="hide('forget')">
+                <b-button class="d-none" variant="outline-danger" @click="hide('forget')">
                     Cerrar
                 </b-button>
             </template>
@@ -130,6 +130,10 @@ export default {
     },
 
     beforeCreate() {
+        if(sessionStorage.getItem('user') == undefined) {
+            document.body.style = "background-color: #5284b5 !important"
+            this.$router.push({name: "Principal"})
+        }
         this.user = sessionStorage.getItem('user')
         this.user = JSON.parse(this.user)
         const path = "http://localhost:8000/api/v1.0/users/?email=" + this.user.email  + "&password=" + this.user.password
@@ -254,7 +258,7 @@ export default {
         text-decoration: underline;
     }
 
-        .imageFotos{
+    .imageFotos{
         width: 180px;
         height: 180px;
         cursor: pointer;
@@ -293,7 +297,7 @@ export default {
 
     .row-modal-form {
         background-color: #e0e0e0;
-        height: 15% !important;
+        height: 90px !important;
     }
 
     textarea {

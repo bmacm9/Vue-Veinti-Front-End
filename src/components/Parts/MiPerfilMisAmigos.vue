@@ -6,7 +6,7 @@
                     <h4>Mis Amigos</h4> 
                 </div>
             </div>
-            <div class="row mt-3 ml-3 py-2 border-bottom">
+            <div v-if="aux.length != 0" class="row mt-3 ml-3 py-2 border-bottom">
                 <div v-for="amigo in aux" :key="amigo.id" class="col-4 my-2 p-0">
                     <div class="row row-amigo" @click="recarga(amigo.id)">
                         <div class="col-12">
@@ -20,6 +20,11 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div v-if="aux.length == 0" class="row mt-3 ml-3 py-2 border-bottom">
+                <div class="col-12 ml-2">
+                    <small>Todavía no has agregado a ningún amigo.</small>
                 </div>
             </div>
             <div v-if="amigos.length > 6" class="row ml-3 mt-2">

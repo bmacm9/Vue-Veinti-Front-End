@@ -1,7 +1,7 @@
 <template>
     <div class="w-100">
         <b-navbar toggleable="lg" type="dark" variant="info">
-            <b-navbar-brand to="/home"><img class="logo" src="../../../static/logoTuenti.png"/></b-navbar-brand>
+            <b-navbar-brand to="/home"><img class="logo" src="../../../static/logo.png"/></b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -153,7 +153,6 @@ export default {
                 formData.append('image', imagen)
                 formData.append('dateTime', new Date().toISOString())
                 formData.append('uploaded_by', this.user.id)
-                console.log(formData)
                 let aux = {dateTime: new Date().toISOString(), image: imagen, uploaded_by: this.user.id}
                 axios.post(path, formData)
                 .then((response) => {})
@@ -203,7 +202,8 @@ export default {
     }
 
     .logo {
-        height: 50px !important;
+        margin: 10px 0;
+        height: 30px !important;
     }
 
     .navbar {
