@@ -1,6 +1,6 @@
 <template>
     <div class="w-100">
-        <b-navbar toggleable="lg" type="dark" variant="info">
+        <b-navbar toggleable="lg" type="dark">
             <b-navbar-brand to="/home"><img class="logo" src="../../../static/logo.png"/></b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -38,7 +38,7 @@
                                         <p class="text-center">Haz click mientras presionas Ctrl para seleccionar varios archivos</p>
                                     </div>
                                     <div class="col-12 text-center">
-                                        <b-button class="btn-veinti" variant="primary">Seleccionar Fotos</b-button>
+                                        <b-button class="btn-veinti">Seleccionar Fotos</b-button>
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +147,7 @@ export default {
         },
 
         subirImagenes() {
-            const path = "http://localhost:8000/api/v1.0/photos/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/photos/"
             for(let imagen of this.images){
                 let formData = new FormData()
                 formData.append('image', imagen)
@@ -160,7 +160,7 @@ export default {
         },
 
         addVisit() {
-            const path1 = "http://localhost:8000/api/v1.0/users/"+ this.$route.params.id +"/"
+            const path1 = "http://migueldev.pythonanywhere.com/api/v1.0/users/"+ this.$route.params.id +"/"
             axios.get(path1).then((response) => {
                 let nuevaVisita = response.data.visits + 1
                 axios.patch(path1, {visits: nuevaVisita}).then((response) => {})
@@ -168,7 +168,7 @@ export default {
         },
 
         getID(email) {
-            const path = "http://localhost:8000/api/v1.0/users/?email=" + email
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + email
             axios.get(path).then((response) => {
                 this.user.id = response.data[0].id
                 if(this.$route.params.id) {
@@ -199,7 +199,7 @@ export default {
     
     body {
         background-color: white !important;
-    }
+    } 
 
     .logo {
         margin: 10px 0;

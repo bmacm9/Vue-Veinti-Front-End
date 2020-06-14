@@ -75,7 +75,7 @@ export default {
         }   
 
         
-        const path = "http://localhost:8000/api/v1.0/users/?id=" + this.$route.params.id
+        const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?id=" + this.$route.params.id
         axios.get(path).then((response) => {
             this.user.nombre = response.data[0].name
             this.user.apellido = response.data[0].surname
@@ -94,8 +94,8 @@ export default {
                 this.miPerfil()
                 
                 if(this.$refs.navbar.user.id != this.$route.params.id) {
-                    const path2 = "http://localhost:8000/api/v1.0/friends/?user=" + this.$route.params.id + "&is_friend=" + this.$refs.navbar.user.id
-                    const path3 = "http://localhost:8000/api/v1.0/friends/?user=" + this.$refs.navbar.user.id + "&is_friend=" + this.$route.params.id
+                    const path2 = "http://migueldev.pythonanywhere.com/api/v1.0/friends/?user=" + this.$route.params.id + "&is_friend=" + this.$refs.navbar.user.id
+                    const path3 = "http://migueldev.pythonanywhere.com/api/v1.0/friends/?user=" + this.$refs.navbar.user.id + "&is_friend=" + this.$route.params.id
                     axios.all([axios.get(path2), axios.get(path3)]).then((response) => {
                         for(let respuesta of response) {
                             if(respuesta.data.length != 0) {
@@ -144,7 +144,7 @@ export default {
         recargar() {
             if(this.$refs.navbar.user.id != this.$route.params.id)
                 this.$refs.navbar.addVisit()
-                const path = "http://localhost:8000/api/v1.0/users/?id=" + this.$route.params.id
+                const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?id=" + this.$route.params.id
                 axios.get(path).then((response) => {
                     this.user.nombre = response.data[0].name
                     this.user.apellido = response.data[0].surname
@@ -171,7 +171,7 @@ export default {
         },
 
         existePeticion () {
-            const path = "http://localhost:8000/api/v1.0/friendrequest/?user=" + this.$refs.navbar.user.id + "&send_to=" + this.$route.params.id
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/friendrequest/?user=" + this.$refs.navbar.user.id + "&send_to=" + this.$route.params.id
             axios.get(path).then((response) => {
                 if(response.data.length != 0) {
                     this.yaMandada = true
@@ -181,7 +181,7 @@ export default {
         },
 
         mandarPeticion() {
-            const path = "http://localhost:8000/api/v1.0/friendrequest/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/friendrequest/"
             let contenido = {
                 user: this.$refs.navbar.user.id,
                 send_to: this.$route.params.id,
@@ -198,7 +198,7 @@ export default {
         },
 
         cancelarPeticion() {
-            const path = "http://localhost:8000/api/v1.0/friendrequest/" + this.idPeticionMandada + "/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/friendrequest/" + this.idPeticionMandada + "/"
             axios.delete(path).then((response) => {
                 this.borrar = true
                 setTimeout(() => {
@@ -212,7 +212,7 @@ export default {
         },
 
         crear() {
-            const path = "http://localhost:8000/api/v1.0/users/?id=" + this.$route.params.id
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?id=" + this.$route.params.id
             axios.get(path).then((response) => {
                 this.user.nombre = response.data[0].name
                 this.user.apellido = response.data[0].surname
@@ -231,8 +231,8 @@ export default {
                     this.miPerfil()
                     
                     if(this.$refs.navbar.user.id != this.$route.params.id) {
-                        const path2 = "http://localhost:8000/api/v1.0/friends/?user=" + this.$route.params.id + "&is_friend=" + this.$refs.navbar.user.id
-                        const path3 = "http://localhost:8000/api/v1.0/friends/?user=" + this.$refs.navbar.user.id + "&is_friend=" + this.$route.params.id
+                        const path2 = "http://migueldev.pythonanywhere.com/api/v1.0/friends/?user=" + this.$route.params.id + "&is_friend=" + this.$refs.navbar.user.id
+                        const path3 = "http://migueldev.pythonanywhere.com/api/v1.0/friends/?user=" + this.$refs.navbar.user.id + "&is_friend=" + this.$route.params.id
                         axios.all([axios.get(path2), axios.get(path3)]).then((response) => {
                             for(let respuesta of response) {
                                 if(respuesta.data.length != 0) {

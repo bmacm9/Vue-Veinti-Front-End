@@ -85,7 +85,7 @@ export default {
 
     methods: {
         getID(email) {
-            const path = "http://localhost:8000/api/v1.0/users/?email=" + email
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + email
             axios.get(path).then((response) => {
                 this.user.id = response.data[0].id
                 this.getFriends()
@@ -93,8 +93,8 @@ export default {
         },
 
         getFriends() {
-            const path = "http://localhost:8000/api/v1.0/friends/?user=" + this.user.id
-            const path2 = "http://localhost:8000/api/v1.0/friends/?is_friend=" + this.user.id
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/friends/?user=" + this.user.id
+            const path2 = "http://migueldev.pythonanywhere.com/api/v1.0/friends/?is_friend=" + this.user.id
 
             axios.all([axios.get(path), axios.get(path2)]).then((response) => {
                 for(let respuesta of response[0].data) {
@@ -108,7 +108,7 @@ export default {
         },
 
         enviarMensaje() {
-            const path = "http://localhost:8000/api/v1.0/privatemessage/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/privatemessage/"
             let datos = {
                 dateTime: new Date().toISOString(),
                 message: this.textArea,

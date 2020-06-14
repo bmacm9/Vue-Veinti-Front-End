@@ -101,13 +101,13 @@ export default {
     methods: {
         enviarInvi() {
             this.id_peticion = this.makeid(5)
-            const path = "http://localhost:8000/api/v1.0/invitation/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/invitation/"
             let datos = {
                 code: this.id_peticion,
                 user: this.user.id
             }
             axios.post(path, datos).then((response) => {
-                const path2 = "http://localhost:8000/api/v1.0/users/" + this.user.id + "/"
+                const path2 = "http://migueldev.pythonanywhere.com/api/v1.0/users/" + this.user.id + "/"
                 let datos2 = {invitations: this.user.invis-1}
                 axios.patch(path2, datos2).then((response2) => {
                 }).catch((error2) => {
@@ -130,24 +130,24 @@ export default {
         },
 
         getPeticiones() {
-            const path = "http://localhost:8000/api/v1.0/friendrequest/?send_to=" + this.user.id
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/friendrequest/?send_to=" + this.user.id
             axios.get(path).then((response) => {
                 this.notificaciones.peticion = response.data.length
             })
         },
 
         getNotificaciones() {
-            const path = "http://localhost:8000/api/v1.0/notifications/?user=" + this.user.id
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/notifications/?user=" + this.user.id
             axios.get(path).then((response) => {
                 this.notificaciones.comentario = response.data.length
             })
         },
 
         borrarNoti() {
-            const path = "http://localhost:8000/api/v1.0/notifications/?user=" + this.user.id
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/notifications/?user=" + this.user.id
             axios.get(path).then((response) => {
                 for(let respuesta of response.data){
-                    let path2 = "http://localhost:8000/api/v1.0/notifications/" + respuesta.id + "/"
+                    let path2 = "http://migueldev.pythonanywhere.com/api/v1.0/notifications/" + respuesta.id + "/"
                     axios.delete(path2).then((response) => {
                         this.$router.push({name: "MiPerfil", params: {id: this.user.id}})
                     })

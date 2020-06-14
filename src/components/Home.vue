@@ -42,7 +42,7 @@ export default {
     if(sessionStorage.getItem('user') != undefined) {
       this.user = sessionStorage.getItem('user')
       this.user = JSON.parse(this.user)
-      const path = "http://localhost:8000/api/v1.0/users/?email=" + this.user.email  + "&password=" + this.user.password
+      const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + this.user.email  + "&password=" + this.user.password
       axios.get(path).then((response) => {
         this.user.nombre = response.data[0].name
         this.user.apellido = response.data[0].surname

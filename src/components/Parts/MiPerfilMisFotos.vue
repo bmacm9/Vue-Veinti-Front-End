@@ -126,7 +126,7 @@ export default {
     beforeCreate() {
         this.user = sessionStorage.getItem('user')
         this.user = JSON.parse(this.user)
-        const path = "http://localhost:8000/api/v1.0/users/?email=" + this.user.email  + "&password=" + this.user.password
+        const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + this.user.email  + "&password=" + this.user.password
         axios.get(path).then((response) => {
             this.user.nombre = response.data[0].name
             this.user.apellido = response.data[0].surname
@@ -143,7 +143,7 @@ export default {
     
     methods: {
         getPhotos(id) {
-            const path = "http://localhost:8000/api/v1.0/photos/?uploaded_by=" + this.$route.params.id
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/photos/?uploaded_by=" + this.$route.params.id
             axios.get(path).then((response) => {
                 for(let i = 0; i < 6; i++){
                     this.auxImages.push(response.data[i])
@@ -158,7 +158,7 @@ export default {
         },
 
         nuevoComentarioFoto() {
-            const path = "http://localhost:8000/api/v1.0/commentphotos/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/commentphotos/"
             var data = {
                 comment: this.modal.form_respuesta,
                 dateTime: new Date().toISOString,
@@ -182,7 +182,7 @@ export default {
         },
 
         cargarImagenModal(image) {
-            const path2 = "http://localhost:8000/api/v1.0/commentphotos/?image=" + image.id 
+            const path2 = "http://migueldev.pythonanywhere.com/api/v1.0/commentphotos/?image=" + image.id 
 
             axios.get(path2).then((response) => {
                 this.modal.respuestas = response.data
@@ -192,7 +192,7 @@ export default {
 
             this.modal.imagen = image.image
             this.modal.id = image.id
-            const path = "http://localhost:8000/api/v1.0/users/?id=" + image.uploaded_by
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?id=" + image.uploaded_by
             axios.get(path).then((response) => {
                 this.modal.subido_por = response.data[0].name + " " + response.data[0].surname
                 this.modal.id_user = response.data[0].id

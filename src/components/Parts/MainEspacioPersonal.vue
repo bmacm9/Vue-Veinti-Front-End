@@ -158,7 +158,7 @@ export default {
 
     methods: {
         getEspacio() {
-            const path = "http://localhost:8000/api/v1.0/personalspace/?user=" + this.$route.params.id
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/personalspace/?user=" + this.$route.params.id
             axios.get(path).then((response) => {
                 this.idEspacio = response.data[this.numeroDeEspacioActual-1].id
                 this.numeroDeEspaciosTotales = Object.keys(response.data).length
@@ -212,7 +212,7 @@ export default {
                 "dateTime": new Date().toISOString(),
                 "user": this.form.user,
             }
-            const path = "http://localhost:8000/api/v1.0/personalspace/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/personalspace/"
             axios.post(path, personalSpace).then((response)=>{
                 this.getEspacio(this.$route.params.id)
                 this.cerrarFormulario()
@@ -230,7 +230,7 @@ export default {
         },
 
         borrarEspacio() {
-            const path = "http://localhost:8000/api/v1.0/personalspace/" + this.idEspacio + "/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/personalspace/" + this.idEspacio + "/"
             axios.delete(path).then((response) =>{
                 if(this.numeroDeEspaciosTotales > 1)
                     this.getEspacio(this.$route.params.id)
@@ -258,7 +258,7 @@ export default {
     beforeCreate() {
         var thisUser = sessionStorage.getItem('user')
         thisUser = JSON.parse(thisUser)
-        const path = "http://localhost:8000/api/v1.0/users/?email=" + thisUser.email + "&password=" + thisUser.password
+        const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + thisUser.email + "&password=" + thisUser.password
         axios.get(path).then((response) => {
             if(response.data[0].id == this.$route.params.id) {
                 this.respuesta = true

@@ -327,7 +327,7 @@ export default {
     beforeCreate() {
         var thisUser = sessionStorage.getItem('user')
         thisUser = JSON.parse(thisUser)
-        const path = "http://localhost:8000/api/v1.0/users/?email=" + thisUser.email + "&password=" + thisUser.password
+        const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + thisUser.email + "&password=" + thisUser.password
         axios.get(path).then((response) => {
             this.user = response.data[0]
             if(response.data[0].id == this.$route.params.id) {
@@ -382,15 +382,15 @@ export default {
         cargarTablon(tipo="decremento") {
             this.aux = false;
             this.entradasTotales = []
-            const path = "http://localhost:8000/api/v1.0/status/?user=" + this.$route.params.id
-            const path2 = "http://localhost:8000/api/v1.0/commentsprofiles/?profile=" + this.$route.params.id + "&page=" + this.pagina
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/status/?user=" + this.$route.params.id
+            const path2 = "http://migueldev.pythonanywhere.com/api/v1.0/commentsprofiles/?profile=" + this.$route.params.id + "&page=" + this.pagina
             axios.all([axios.get(path), axios.get(path2)]).then((response) => {
                 
                 for(let devuelve of response) {
                     for(let objeto of devuelve.data.results) {
                         if(objeto.hasAnswers != "no"){
                             if(objeto.status_text){
-                                var path3 = "http://localhost:8000/api/v1.0/commentstatus/?status=" + objeto.id
+                                var path3 = "http://migueldev.pythonanywhere.com/api/v1.0/commentstatus/?status=" + objeto.id
                                 axios.get(path3).then((response2) => {
                                     let arrayConRespuestas = []
                                     for(let statusWithAnswers of response2.data){
@@ -399,7 +399,7 @@ export default {
                                     this.entradasTotales.push(arrayConRespuestas)
                                 })
                             } else {
-                                var path3 = "http://localhost:8000/api/v1.0/replycomment/?commentProfile=" + objeto.id
+                                var path3 = "http://migueldev.pythonanywhere.com/api/v1.0/replycomment/?commentProfile=" + objeto.id
                                 axios.get(path3).then((response2) => {
                                     let arrayConRespuestas = []
                                     for(let statusWithAnswers of response2.data){
@@ -448,7 +448,7 @@ export default {
         },
         
         nuevoMensajePerfil() {
-            const path = "http://localhost:8000/api/v1.0/commentsprofiles/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/commentsprofiles/"
             let comentario = {
                 "user": this.user.id,
                 "comment": this.textArea, 
@@ -456,7 +456,7 @@ export default {
                 "profile": this.$route.params.id 
             }
             axios.post(path, comentario).then((response) => {
-                const path2 = "http://localhost:8000/api/v1.0/notifications/"
+                const path2 = "http://migueldev.pythonanywhere.com/api/v1.0/notifications/"
                 let notificacion = {
                     user: this.$route.params.id
                 }
@@ -495,7 +495,7 @@ export default {
         },
 
         eliminarEstado(id) {
-            const path = "http://localhost:8000/api/v1.0/status/" + id + "/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/status/" + id + "/"
             axios.delete(path).then((response) => {
                 this.perfil(this.$route.params.id)
             }).catch((error) => {
@@ -504,7 +504,7 @@ export default {
         },
 
         eliminarComentario(id) {
-            const path = "http://localhost:8000/api/v1.0/commentsprofiles/" + id + "/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/commentsprofiles/" + id + "/"
             axios.delete(path).then((response) => {
                 this.perfil(this.$route.params.id)
             }).catch((error) => {
@@ -513,8 +513,8 @@ export default {
         },
 
         enviarRespuestaComentario(event, id) {
-            const path = "http://localhost:8000/api/v1.0/replycomment/"
-            const path2 = "http://localhost:8000/api/v1.0/commentsprofiles/" + id + "/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/replycomment/"
+            const path2 = "http://migueldev.pythonanywhere.com/api/v1.0/commentsprofiles/" + id + "/"
             var insertar = {
                 reply: event.target.firstChild.firstChild.value,
                 dateTime: new Date().toISOString(),
@@ -535,8 +535,8 @@ export default {
         },
 
         enviarRespuestaEstado(event, id) {
-            const path = "http://localhost:8000/api/v1.0/commentstatus/"
-            const path2 = "http://localhost:8000/api/v1.0/status/" + id + "/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/commentstatus/"
+            const path2 = "http://migueldev.pythonanywhere.com/api/v1.0/status/" + id + "/"
             var insertar = {
                 comment: event.target.firstChild.firstChild.value,
                 dateTime: new Date().toISOString(),

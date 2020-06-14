@@ -65,11 +65,11 @@ export default {
                 posibleNombre.push(this.arrayBusqueda[i])
                 let peticion = {"nombre": posibleNombre.join(' '), "apellido": (this.arrayBusqueda.filter(x => !posibleNombre.includes(x)).join(' '))}
                 if(peticion.nombre != "" && peticion.apellido != "")
-                    peticiones.push(axios.get('http://localhost:8000/api/v1.0/users/?name=' + peticion.nombre + '&surname=' + peticion.apellido))
+                    peticiones.push(axios.get('http://migueldev.pythonanywhere.com/api/v1.0/users/?name=' + peticion.nombre + '&surname=' + peticion.apellido))
                 else if(peticion.nombre != "") {
-                    peticiones.push(axios.get('http://localhost:8000/api/v1.0/users/?name=' + peticion.nombre))
+                    peticiones.push(axios.get('http://migueldev.pythonanywhere.com/api/v1.0/users/?name=' + peticion.nombre))
                 } else if(peticion.apellido != ""){
-                    peticiones.push(axios.get('http://localhost:8000/api/v1.0/users/?surname=' + peticion.apellido))
+                    peticiones.push(axios.get('http://migueldev.pythonanywhere.com/api/v1.0/users/?surname=' + peticion.apellido))
                 }
             }
             axios.all(peticiones).then((response) => {

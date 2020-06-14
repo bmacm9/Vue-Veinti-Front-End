@@ -52,8 +52,8 @@ export default {
     },
 
     beforeCreate() {        
-        const path = "http://localhost:8000/api/v1.0/friends/?user=" + this.$route.params.id
-        const path2 = "http://localhost:8000/api/v1.0/friends/?is_friend=" + this.$route.params.id
+        const path = "http://migueldev.pythonanywhere.com/api/v1.0/friends/?user=" + this.$route.params.id
+        const path2 = "http://migueldev.pythonanywhere.com/api/v1.0/friends/?is_friend=" + this.$route.params.id
         axios.all([axios.get(path), axios.get(path2)]).then((response) => {
             for(let amigo of response[0].data){
                 this.amigos.push(amigo.is_friend)

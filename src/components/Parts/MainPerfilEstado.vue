@@ -29,7 +29,7 @@ export default {
     methods: {
         getEstado() {
             if(this.$route.params.id){
-                const path = "http://localhost:8000/api/v1.0/status/?user=" + this.$route.params.id
+                const path = "http://migueldev.pythonanywhere.com/api/v1.0/status/?user=" + this.$route.params.id
                 axios.get(path).then((response) => {
                     if(response.data.results.length > 0) {
                         this.estado.estado_texto = response.data.results[0].status_text
@@ -49,14 +49,14 @@ export default {
         getStatusWithID() {
             let user = sessionStorage.getItem('user')
             user = JSON.parse(user)
-            const path = "http://localhost:8000/api/v1.0/users/?email=" + user.email
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + user.email
             axios.get(path).then((response) => {
                 this.getStatus(response.data[0].id)
             })
         },
 
         getStatus(id) {
-            const path = "http://localhost:8000/api/v1.0/status/?user=" + id
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/status/?user=" + id
             axios.get(path).then((response) => {
                 if(response.data.results.length > 0) {
                     this.estado.estado_texto = response.data.results[0].status_text

@@ -88,7 +88,7 @@ export default {
 
     methods: {
         getID(email) {
-            const path = "http://localhost:8000/api/v1.0/users/?email=" + email
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + email
             axios.get(path).then((response) => {
                 this.user.id = response.data[0].id
                 this.getMensajes()
@@ -96,7 +96,7 @@ export default {
         },
 
         getMensajes() {
-            const path = "http://localhost:8000/api/v1.0/privatemessage/?send_to=" + this.user.id
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/privatemessage/?send_to=" + this.user.id
             axios.get(path).then((response) => {
                 for(let respuesta of response.data) {
                     this.totalMensajes.push(respuesta)

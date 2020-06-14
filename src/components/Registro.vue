@@ -151,7 +151,7 @@ export default {
     },
 
     beforeCreate() {
-        const path = "http://localhost:8000/api/v1.0/invitation/?code=" + this.$route.params.code
+        const path = "http://migueldev.pythonanywhere.com/api/v1.0/invitation/?code=" + this.$route.params.code
         axios.get(path).then((response) => {
             if(response.data.length != 0) {
                 this.existe = true
@@ -179,7 +179,7 @@ export default {
         },
 
         registrarse() {
-            const path = "http://localhost:8000/api/v1.0/users/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/"
             this.passSha = sha256(this.form.pass)
 
             for(let imagen of this.images){

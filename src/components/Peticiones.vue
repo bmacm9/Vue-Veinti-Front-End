@@ -50,7 +50,7 @@ export default {
 
     created() {
         setTimeout(() => {
-            const path = "http://localhost:8000/api/v1.0/friendrequest/?send_to=" + this.$refs.navbar.user.id
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/friendrequest/?send_to=" + this.$refs.navbar.user.id
             axios.get(path).then((response) => {
                 for(let peticion of response.data)
                 this.peticiones.push(peticion)
@@ -67,13 +67,13 @@ export default {
 
     methods: {
         aceptar(peticion) {
-            const path = "http://localhost:8000/api/v1.0/friends/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/friends/"
             let datos = {
                 user: peticion.user.id,
                 is_friend: peticion.send_to.id,
             }
             axios.post(path, datos).then((response) => {
-                const path2 = "http://localhost:8000/api/v1.0/friendrequest/" + peticion.id + "/"
+                const path2 = "http://migueldev.pythonanywhere.com/api/v1.0/friendrequest/" + peticion.id + "/"
                 axios.delete(path2).then((response) => {
                     this.$router.push({name: "home"})
                 })

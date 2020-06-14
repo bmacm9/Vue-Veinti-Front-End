@@ -86,7 +86,7 @@ export default {
                 dateTime: new Date().toISOString(),
                 user: this.user.id
             }
-            const path = "http://localhost:8000/api/v1.0/status/"
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/status/"
             axios.post(path, newStatus).then((response) => {
                 this.$router.replace('/perfil/' + this.user.id)
             }).catch((error) => {
@@ -99,8 +99,8 @@ export default {
         },
 
         getAmigos() {
-            const path = "http://localhost:8000/api/v1.0/friends/?user=" + this.user.id
-            const path2 = "http://localhost:8000/api/v1.0/friends/?is_friend=" + this.user.id
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/friends/?user=" + this.user.id
+            const path2 = "http://migueldev.pythonanywhere.com/api/v1.0/friends/?is_friend=" + this.user.id
             axios.all([axios.get(path), axios.get(path2)]).then((response) => {
                 for(let amigo of response[0].data){
                     this.amigos.push(amigo.is_friend)
@@ -116,7 +116,7 @@ export default {
         },
 
         getID(email) {
-            const path = "http://localhost:8000/api/v1.0/users/?email=" + email
+            const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + email
             axios.get(path).then((response) => {
                 this.user.id = response.data[0].id
                 this.getAmigos()
