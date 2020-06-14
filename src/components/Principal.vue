@@ -55,7 +55,7 @@ export default {
 
     methods: {
         logIn() {
-            const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + this.user.email  + "&password=" + sha256(this.user.password)
+            const path = "https://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + this.user.email  + "&password=" + sha256(this.user.password)
             axios.get(path).then((response) => {
                 if(response.data.length > 0){
                     this.error = ""
@@ -73,7 +73,7 @@ export default {
         },
 
         autologin() {
-            const path = "http://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + this.user.email  + "&password=" + this.user.password
+            const path = "https://migueldev.pythonanywhere.com/api/v1.0/users/?email=" + this.user.email  + "&password=" + this.user.password
             axios.get(path).then((response) => {
                 if(response.data.length > 0){
                     this.error = ""
