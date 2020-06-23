@@ -15,10 +15,6 @@ El proyecto constará de dos aplicaciones, front-end y back-end, que serán desa
 ![Imagen de perfil de Veinti](https://github.com/bmacm9/DIST-VEINTI/blob/master/static/8.png?raw=true)
 
 
-# frontveinti
-
-> Front-end for Veinti social network
-
 ## Build Setup
 
 ``` bash
